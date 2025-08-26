@@ -65,6 +65,11 @@ def run() -> tuple[bool, bool]:
     # we try to transform the existing data from the database into our own structure so it's easier
     # to process.
     current_progression = progression_database.get()
+    
+    # Handle case where database starts as empty list
+    if isinstance(current_progression, list):
+        current_progression = {}
+    
     database_entries: dict[str, DatabaseEntry] = {
         **{key: DatabaseEntry(**entry) for key, entry in current_progression.items()},
         **{summaries[0].date: DatabaseEntry.create(summaries[0], user.site_streak)},
