@@ -46,6 +46,15 @@ def run() -> tuple[bool, bool]:
 
     # Get the possible data.
     raw_user, raw_summary = api.fetch_data(username, token)
+    
+    # Debug: Log the raw API response
+    log(f"Raw user data: {raw_user}")
+    log(f"Raw summary data: {raw_summary}")
+    
+    if raw_summary.get("summaries") and len(raw_summary["summaries"]) > 0:
+        log(f"First summary entry: {raw_summary['summaries'][0]}")
+    else:
+        log("No summaries found in API response")
 
     # Transform them into our internal schema.
     user = User(**raw_user)
@@ -117,6 +126,8 @@ def main() -> None:
         log(
             f"Error encountered when parsing data. Potentially, a breaking API change: {error}"
         )
+        log("This usually means the API response format has changed or contains unexpected null values.")
+        log("Check the debug output above to see the actual API response.")
     except (
         CaptchaException,
         LoginException,

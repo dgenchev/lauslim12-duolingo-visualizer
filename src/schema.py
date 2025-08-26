@@ -1,6 +1,7 @@
 from datetime import datetime
+from typing import Optional
 
-from pydantic import BaseModel, ConfigDict, Field, field_validator
+from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
 
 class BaseSchema(BaseModel):
@@ -9,9 +10,9 @@ class BaseSchema(BaseModel):
 
 class Summary(BaseSchema):
     date: str = Field(alias="date")
-    gained_xp: int = Field(alias="gainedXp")
-    num_sessions: int = Field(alias="numSessions")
-    total_session_time: int = Field(alias="totalSessionTime")
+    gained_xp: Optional[int] = Field(alias="gainedXp", default=None)
+    num_sessions: Optional[int] = Field(alias="numSessions", default=None)
+    total_session_time: Optional[int] = Field(alias="totalSessionTime", default=None)
 
     @field_validator("date", mode="before")
     @classmethod
@@ -21,6 +22,17 @@ class Summary(BaseSchema):
             if isinstance(raw, str)
             else datetime.fromtimestamp(raw).strftime("%Y/%m/%d")
         )
+
+    @model_validator(mode='after')
+    def convert_none_to_zero(self) -> 'Summary':
+        """Convert None values to 0 for fields that should be integers"""
+        if self.gained_xp is None:
+            self.gained_xp = 0
+        if self.num_sessions is None:
+            self.num_sessions = 0
+        if self.total_session_time is None:
+            self.total_session_time = 0
+        return self
 
     @staticmethod
     def create_default(date: str) -> "Summary":
