@@ -61,6 +61,8 @@ jobs:
           mkdir build
           cp web/* build
           cp data/duolingo-progress.json build
+          # Inject username into HTML files
+          sed -i "s/DUOLINGO_USERNAME_PLACEHOLDER/${{ secrets.DUOLINGO_USERNAME }}/g" build/*.html
 
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4

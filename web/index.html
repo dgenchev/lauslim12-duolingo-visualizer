@@ -51,6 +51,75 @@
         </div>
       </section>
 
+      <!-- Summary Statistics Section -->
+      <section class="my-4">
+        <div class="d-flex justify-content">
+          <span class="fw-bold lead pe-2">#</span>
+          <p class="fw-bold lead shadow-lg">
+            <mark>Summary Statistics</mark>
+          </p>
+        </div>
+
+        <div class="row g-3 mb-2">
+          <div class="col-md-4 col-sm-6">
+            <div class="card border-primary">
+              <div class="card-body text-center">
+                <h3 class="card-title text-primary mb-1" id="totalXp">-</h3>
+                <p class="card-text text-muted">Total XP</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4 col-sm-6">
+            <div class="card border-warning">
+              <div class="card-body text-center">
+                <h3 class="card-title text-warning mb-1" id="currentStreak">-</h3>
+                <p class="card-text text-muted">Current Streak</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4 col-sm-6">
+            <div class="card border-success">
+              <div class="card-body text-center">
+                <h3 class="card-title text-success mb-1" id="totalCrowns">-</h3>
+                <p class="card-text text-muted">Total Crowns</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Language flags positioned under Total XP -->
+        <div class="row g-1 mb-4">
+          <div class="col-md-4 col-sm-6">
+            <div class="row g-1" id="languageCards">
+              <!-- Language cards will be populated by JavaScript -->
+            </div>
+          </div>
+          <div class="col-md-8 col-sm-6">
+            <!-- Empty space to maintain alignment -->
+          </div>
+        </div>
+      </section>
+
+      <section class="my-4">
+        <div class="d-flex justify-content">
+          <span class="fw-bold lead pe-2">#</span>
+          <p class="fw-bold lead shadow-lg">
+            <mark>Interactive Controls</mark>
+          </p>
+        </div>
+
+        <div class="alert alert-info">
+          <h6 class="alert-heading">📊 Chart Navigation</h6>
+          <p class="mb-2">All charts support interactive zoom and pan:</p>
+          <ul class="mb-0">
+            <li><strong>Mouse wheel:</strong> Zoom in/out on the time axis</li>
+            <li><strong>Click & drag:</strong> Pan left/right to explore different time periods</li>
+            <li><strong>Touch devices:</strong> Pinch to zoom, drag to pan</li>
+            <li><strong>Reset:</strong> Use browser refresh or zoom out with mouse wheel</li>
+          </ul>
+        </div>
+      </section>
+
       <section class="my-4">
         <div class="d-flex justify-content">
           <span class="fw-bold lead pe-2">#</span>
@@ -178,8 +247,15 @@
       crossorigin="anonymous"
     ></script>
 
+    <!-- Chart.js Zoom Plugin -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@2.0.1/dist/chartjs-plugin-zoom.min.js"
+      crossorigin="anonymous"
+    ></script>
+
     <!-- Personal Script -->
     <script defer type="text/javascript">
+
       /**
        * Who doesn't love intellisense? I'll define the JSON schema of the `duolingo-progress.json` here so you can
        * enjoy the intellisense.
@@ -201,9 +277,9 @@
        * @returns {Promise<Data>} Data consisting of Duolingo information.
        */
       async function getDataFromJSON() {
-        const url = `${window.location.protocol}//${window.location.hostname}`;
+        const url = `${window.location.protocol}//${window.location.hostname}:${window.location.port}`;
         const response = await fetch(
-          `${url}/lauslim12-duolingo-visualizer/duolingo-progress.json`
+          `${url}/data/duolingo-progress.json`
         );
 
         return response.json();
@@ -218,8 +294,12 @@
         const dates = Object.keys(data);
         const values = Object.values(data);
         const element = document.getElementById("experienceGraph");
-        if (!element) return null;
+        if (!element) {
+          console.error('Experience graph element not found');
+          return null;
+        }
 
+        console.log('Creating experience graph with zoom plugin...');
         return new Chart(element, {
           type: "line",
           data: {
@@ -311,7 +391,32 @@
               },
               subtitle: {
                 display: true,
-                text: "Daily generation of XPs compared with your daily goal.",
+                text: "Daily generation of XPs compared with your daily goal. Use mouse wheel to zoom, drag to pan, double-click to reset.",
+              },
+              zoom: {
+                zoom: {
+                  wheel: {
+                    enabled: true,
+                  },
+                  pinch: {
+                    enabled: true,
+                  },
+                  mode: 'x',
+                },
+                pan: {
+                  enabled: true,
+                  mode: 'x',
+                },
+                limits: {
+                  x: {min: 'original', max: 'original', minRange: 0}
+                }
+              },
+              interaction: {
+                intersect: false,
+                mode: 'index'
+              },
+              onHover: (event, activeElements) => {
+                event.native.target.style.cursor = activeElements.length > 0 ? 'pointer' : 'default';
               },
             },
           },
@@ -411,7 +516,32 @@
               },
               subtitle: {
                 display: true,
-                text: "Showcases your daily time spent (in minutes) in Duolingo.",
+                text: "Showcases your daily time spent (in minutes) in Duolingo. Use mouse wheel to zoom, drag to pan, double-click to reset.",
+              },
+              zoom: {
+                zoom: {
+                  wheel: {
+                    enabled: true,
+                  },
+                  pinch: {
+                    enabled: true,
+                  },
+                  mode: 'x',
+                },
+                pan: {
+                  enabled: true,
+                  mode: 'x',
+                },
+                limits: {
+                  x: {min: 'original', max: 'original', minRange: 0}
+                }
+              },
+              interaction: {
+                intersect: false,
+                mode: 'index'
+              },
+              onHover: (event, activeElements) => {
+                event.native.target.style.cursor = activeElements.length > 0 ? 'pointer' : 'default';
               },
             },
           },
@@ -490,7 +620,32 @@
               },
               subtitle: {
                 display: true,
-                text: "Showcases your number of daily sessions taken in Duolingo.",
+                text: "Showcases your number of daily sessions taken in Duolingo. Use mouse wheel to zoom, drag to pan, double-click to reset.",
+              },
+              zoom: {
+                zoom: {
+                  wheel: {
+                    enabled: true,
+                  },
+                  pinch: {
+                    enabled: true,
+                  },
+                  mode: 'x',
+                },
+                pan: {
+                  enabled: true,
+                  mode: 'x',
+                },
+                limits: {
+                  x: {min: 'original', max: 'original', minRange: 0}
+                }
+              },
+              interaction: {
+                intersect: false,
+                mode: 'index'
+              },
+              onHover: (event, activeElements) => {
+                event.native.target.style.cursor = activeElements.length > 0 ? 'pointer' : 'default';
               },
             },
           },
@@ -540,7 +695,32 @@
               },
               subtitle: {
                 display: true,
-                text: "Showcases your streak information per day.",
+                text: "Showcases your streak information per day. Use mouse wheel to zoom, drag to pan, double-click to reset.",
+              },
+              zoom: {
+                zoom: {
+                  wheel: {
+                    enabled: true,
+                  },
+                  pinch: {
+                    enabled: true,
+                  },
+                  mode: 'x',
+                },
+                pan: {
+                  enabled: true,
+                  mode: 'x',
+                },
+                limits: {
+                  x: {min: 'original', max: 'original', minRange: 0}
+                }
+              },
+              interaction: {
+                intersect: false,
+                mode: 'index'
+              },
+              onHover: (event, activeElements) => {
+                event.native.target.style.cursor = activeElements.length > 0 ? 'pointer' : 'default';
               },
             },
           },
@@ -562,23 +742,163 @@
       }
 
       /**
+       * Renders summary statistics from DuoJSON API.
+       */
+      async function renderSummaryStatistics() {
+        try {
+          // Get username from GitHub Actions (injected during build) or local environment
+          const username = "DUOLINGO_USERNAME_PLACEHOLDER";
+          
+          // Fetch summary statistics from DuoJSON API (using CORS proxy)
+          const response = await fetch(`https://api.allorigins.win/raw?url=${encodeURIComponent(`https://duojson.com/${username}/profile.json`)}`);
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          
+          const profileData = await response.json();
+          console.log('DuoJSON profile data:', profileData);
+          
+          // Extract and display summary statistics
+          document.getElementById('totalXp').textContent = (profileData.totalXp || 0).toLocaleString();
+          document.getElementById('totalCrowns').textContent = (profileData.totalCrowns || 0).toLocaleString();
+          document.getElementById('currentStreak').textContent = `${profileData.currentStreak || 0} days`;
+          
+          // Display language progress (sorted by XP descending)
+          const languageCards = document.getElementById('languageCards');
+          languageCards.innerHTML = '';
+          
+          if (profileData.languages && profileData.languages.length > 0) {
+            // Sort languages by XP (descending)
+            const sortedLanguages = profileData.languages.sort((a, b) => b.xp - a.xp);
+            
+            // Language to flag mapping
+            const languageFlags = {
+              'Dutch': '🇳🇱',
+              'Japanese': '🇯🇵',
+              'German': '🇩🇪',
+              'Russian': '🇷🇺',
+              'Spanish': '🇪🇸',
+              'French': '🇫🇷',
+              'Italian': '🇮🇹',
+              'Portuguese': '🇵🇹',
+              'Chinese': '🇨🇳',
+              'Korean': '🇰🇷',
+              'Arabic': '🇸🇦',
+              'Hindi': '🇮🇳',
+              'Turkish': '🇹🇷',
+              'Polish': '🇵🇱',
+              'Swedish': '🇸🇪',
+              'Norwegian': '🇳🇴',
+              'Danish': '🇩🇰',
+              'Finnish': '🇫🇮',
+              'Greek': '🇬🇷',
+              'Hebrew': '🇮🇱',
+              'Vietnamese': '🇻🇳',
+              'Indonesian': '🇮🇩',
+              'Ukrainian': '🇺🇦',
+              'Czech': '🇨🇿',
+              'Romanian': '🇷🇴',
+              'Hungarian': '🇭🇺',
+              'Bulgarian': '🇧🇬',
+              'Croatian': '🇭🇷',
+              'Slovak': '🇸🇰',
+              'Lithuanian': '🇱🇹',
+              'Latvian': '🇱🇻',
+              'Estonian': '🇪🇪',
+              'Irish': '🇮🇪',
+              'Welsh': '🏴󠁧󠁢󠁷󠁬󠁳󠁿',
+              'Swahili': '🇰🇪',
+              'Hawaiian': '🇺🇸',
+              'Navajo': '🇺🇸',
+              'Yiddish': '🇮🇱',
+              'Esperanto': '🌍',
+              'Klingon': '🖖',
+              'High Valyrian': '🐉',
+              'Latin': '🏛️'
+            };
+            
+            sortedLanguages.forEach((lang, index) => {
+              const flag = languageFlags[lang.course] || '🌍';
+              const card = document.createElement('div');
+              card.className = 'col-3';
+              card.innerHTML = `
+                <div class="card border-info">
+                  <div class="card-body text-center p-1">
+                    <div class="mb-1" style="font-size: 1rem;">${flag}</div>
+                    <h6 class="card-title text-info mb-0" style="font-size: 0.7rem;">${lang.xp.toLocaleString()}</h6>
+                  </div>
+                </div>
+              `;
+              languageCards.appendChild(card);
+            });
+          }
+          
+          console.log('Summary statistics loaded successfully');
+          return null;
+        } catch (error) {
+          console.error('Error loading summary statistics:', error);
+          
+          // Show error state
+          document.getElementById('totalXp').textContent = 'Error';
+          document.getElementById('totalCrowns').textContent = 'Error';
+          document.getElementById('currentStreak').textContent = 'Error';
+          document.getElementById('languageCards').innerHTML = '<div class="col-12"><p class="text-muted">Error loading language data</p></div>';
+          
+          return null;
+        }
+      }
+
+      /**
        * Bootstraps the whole DOM and renders the graphs for you. These functions are
        * not pure and side effects are to be expected: network JSON request and several DOM rendering
        * processes. We make sure that `data` exists to prevent unwanted errors.
        */
       async function bootstrap() {
-        const data = await getDataFromJSON();
-        if (!data) return null;
+        console.log('Starting bootstrap...');
+        
+        // Register Chart.js plugins
+        try {
+          if (typeof ChartAnnotation !== 'undefined') {
+            Chart.register(ChartAnnotation);
+            console.log('Annotation plugin registered');
+          } else {
+            console.warn('ChartAnnotation not available');
+          }
+          
+          if (typeof ChartZoom !== 'undefined') {
+            Chart.register(ChartZoom);
+            console.log('Zoom plugin registered');
+          } else {
+            console.warn('ChartZoom not available');
+          }
+        } catch (error) {
+          console.error('Error registering plugins:', error);
+        }
+        
+        try {
+          const data = await getDataFromJSON();
+          if (!data) {
+            console.error('No data received');
+            return null;
+          }
 
-        // Delegate to other functions after we are sure that `data` variable exists properly and would not
-        // throw any obscure errors.
-        renderExperienceGraph(data);
-        renderTimeGraph(data);
-        renderSessionsGraph(data);
-        renderStreakGraph(data);
-        renderHeader();
+          console.log('Data loaded successfully:', Object.keys(data).length, 'entries');
 
-        return null;
+          // Delegate to other functions after we are sure that `data` variable exists properly and would not
+          // throw any obscure errors.
+          renderExperienceGraph(data);
+          renderTimeGraph(data);
+          renderSessionsGraph(data);
+          renderStreakGraph(data);
+          renderHeader();
+          renderSummaryStatistics();
+
+          console.log('All charts rendered successfully');
+          return null;
+        } catch (error) {
+          console.error('Error in bootstrap:', error);
+          return null;
+        }
       }
 
       /**
