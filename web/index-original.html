@@ -278,11 +278,7 @@
        * @returns {Promise<Data>} Data consisting of Duolingo information.
        */
       async function getDataFromJSON() {
-        const url = `${window.location.protocol}//${window.location.hostname}:${window.location.port}`;
-        const response = await fetch(
-          `${url}/data/duolingo-progress.json`
-        );
-
+        const response = await fetch('./data/duolingo-progress.json');
         return response.json();
       }
 
