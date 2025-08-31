@@ -1,0 +1,37 @@
+{
+  "userId": 276449117,
+  "username": "DimitarGen5",
+  "currentStreak": 294,
+  "totalXp": 190505,
+  "totalCrowns": 39996,
+  "languages": [
+    {
+      "course": "Dutch",
+      "learningLanguage": "nl-NL",
+      "fromLanguage": "en",
+      "xp": 120254,
+      "crowns": 9999
+    },
+    {
+      "course": "Japanese",
+      "learningLanguage": "ja",
+      "fromLanguage": "en",
+      "xp": 881,
+      "crowns": 9999
+    },
+    {
+      "course": "German",
+      "learningLanguage": "de",
+      "fromLanguage": "en",
+      "xp": 52956,
+      "crowns": 9999
+    },
+    {
+      "course": "Russian",
+      "learningLanguage": "ru",
+      "fromLanguage": "en",
+      "xp": 16414,
+      "crowns": 9999
+    }
+  ]
+}
