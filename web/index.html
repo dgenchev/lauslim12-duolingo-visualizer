@@ -9,7 +9,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="#eccc68" />
     <meta
       name="description"
-      content="My Duolingo History"
+      content="My Duolingo History - Interactive Version"
     />
 
     <!-- CDN -->
@@ -20,18 +20,21 @@
       crossorigin="anonymous"
     />
 
+    <!-- Plotly.js -->
+    <script src="https://cdn.plot.ly/plotly-2.26.0.min.js"></script>
+
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="favicon.png" />
 
     <!-- Title -->
-    <title>My Duolingo Visualizer</title>
+    <title>My Duolingo Visualizer - Interactive</title>
   </head>
 
   <body>
     <main class="col-md-12 mx-auto p-3 p-md-4">
       <header>
         <h1 class="display-5 fs-1 fw-bold text-center">
-          My Duolingo Visualizer
+          My Duolingo Visualizer - Interactive
         </h1>
       </header>
 
@@ -45,8 +48,8 @@
 
         <div>
           <p>
-            Visualizing my Duolingo progress everyday with
-            <kbd>Python</kbd> and <kbd>GitHub Actions</kbd>.
+            Interactive visualization of my Duolingo progress with dynamic aggregation.
+            Built with <kbd>Plotly.js</kbd> for advanced interactivity.
           </p>
         </div>
       </section>
@@ -100,26 +103,29 @@
         </div>
       </section>
 
+      <!-- Aggregation Controls -->
       <section class="my-4">
-        <div class="d-flex justify-content">
-          <span class="fw-bold lead pe-2">#</span>
-          <p class="fw-bold lead shadow-lg">
-            <mark>Interactive Controls</mark>
-          </p>
-        </div>
+        <div class="d-flex justify-content-between align-items-center">
+          <div>
+            <span class="fw-bold lead pe-2">#</span>
+            <p class="fw-bold lead shadow-lg d-inline">
+              <mark>Data Aggregation</mark>
+            </p>
+          </div>
+          <div class="btn-group" role="group" aria-label="Aggregation controls">
+            <input type="radio" class="btn-check" name="aggregation" id="daily" value="daily" checked>
+            <label class="btn btn-outline-primary" for="daily">Daily</label>
 
-        <div class="alert alert-info">
-          <h6 class="alert-heading">📊 Chart Navigation</h6>
-          <p class="mb-2">All charts support interactive zoom and pan:</p>
-          <ul class="mb-0">
-            <li><strong>Mouse wheel:</strong> Zoom in/out on the time axis</li>
-            <li><strong>Click & drag:</strong> Pan left/right to explore different time periods</li>
-            <li><strong>Touch devices:</strong> Pinch to zoom, drag to pan</li>
-            <li><strong>Reset:</strong> Use browser refresh or zoom out with mouse wheel</li>
-          </ul>
+            <input type="radio" class="btn-check" name="aggregation" id="weekly" value="weekly">
+            <label class="btn btn-outline-primary" for="weekly">Weekly</label>
+
+            <input type="radio" class="btn-check" name="aggregation" id="monthly" value="monthly">
+            <label class="btn btn-outline-primary" for="monthly">Monthly</label>
+          </div>
         </div>
       </section>
 
+      <!-- Experience Graph -->
       <section class="my-4">
         <div class="d-flex justify-content">
           <span class="fw-bold lead pe-2">#</span>
@@ -127,19 +133,13 @@
         </div>
 
         <div>
-          <p>Graph of my daily XP.</p>
+          <p>Interactive graph of daily XP with aggregation controls.</p>
         </div>
 
-        <article class="vh-100 position-relative">
-          <canvas aria-label="Experience Graph" id="experienceGraph">
-            <p>
-              This is an alternative text. This essentially shows a graph of
-              your experience progress.
-            </p>
-          </canvas>
-        </article>
+        <div id="experienceGraph" style="height: 500px;"></div>
       </section>
 
+      <!-- Time Graph -->
       <section class="my-4">
         <div class="d-flex justify-content">
           <span class="fw-bold lead pe-2">#</span>
@@ -147,19 +147,13 @@
         </div>
 
         <div>
-          <p>Minutes spent per day.</p>
+          <p>Minutes spent per day with aggregation options.</p>
         </div>
 
-        <article class="vh-100 position-relative">
-          <canvas aria-label="Time Graph" id="timeGraph">
-            <p>
-              This is an alternative text. This essentially shows a graph of
-              your time spent daily in Duolingo.
-            </p>
-          </canvas>
-        </article>
+        <div id="timeGraph" style="height: 500px;"></div>
       </section>
 
+      <!-- Sessions Graph -->
       <section class="my-4">
         <div class="d-flex justify-content">
           <span class="fw-bold lead pe-2">#</span>
@@ -167,22 +161,13 @@
         </div>
 
         <div>
-          <p>
-            Number of sessions (lessons or events) taken
-            per day in Duolingo.
-          </p>
+          <p>Number of sessions per day with dynamic aggregation.</p>
         </div>
 
-        <article class="vh-100 position-relative">
-          <canvas aria-label="Sessions Graph" id="sessionsGraph">
-            <p>
-              This is an alternative text. This essentially shows a graph of
-              your number of sessions taken per day in Duolingo.
-            </p>
-          </canvas>
-        </article>
+        <div id="sessionsGraph" style="height: 500px;"></div>
       </section>
 
+      <!-- Streak Graph -->
       <section class="my-4">
         <div class="d-flex justify-content">
           <span class="fw-bold lead pe-2">#</span>
@@ -190,32 +175,17 @@
         </div>
 
         <div>
-          <p>Daily streak.</p>
+          <p>Daily streak with interactive controls.</p>
         </div>
 
-        <article class="vh-100 position-relative">
-          <canvas aria-label="Streak Graph" id="streakGraph">
-            <p>
-              This is an alternative text. This essentially shows a graph of
-              your streak progress.
-            </p>
-          </canvas>
-        </article>
+        <div id="streakGraph" style="height: 500px;"></div>
       </section>
 
       <footer>
         <nav class="d-flex justify-content-center">
           <code style="font-size: 10px" class="fw-lighter text-center">
-            Made with &hearts;, basic web technologies, and automation &bull;
-            for further details, check the
-            <a
-              class="link-primary"
-              href="https://github.com/lauslim12/japanese-duolingo-visualizer"
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              GitHub!
-            </a>
+            Made with &hearts;, Plotly.js, and automation &bull;
+            <a href="index.html" class="link-primary">View Chart.js version</a>
           </code>
         </nav>
       </footer>
@@ -233,512 +203,523 @@
       crossorigin="anonymous"
     ></script>
 
-    <!-- Chart.js -->
-    <script
-      src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"
-      integrity="sha256-+8RZJua0aEWg+QVVKg4LEzEEm/8RFez5Tb4JBNiV5xA="
-      crossorigin="anonymous"
-    ></script>
-
-    <!-- Chart.js Annonations -->
-    <script
-      src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@2.0.0/dist/chartjs-plugin-annotation.min.js"
-      integrity="sha256-SvW8Yj0ZmdQ5mIQ3MNbLIySteN4LwcVnUT/Xq+Qw3v4="
-      crossorigin="anonymous"
-    ></script>
-
-    <!-- Chart.js Zoom Plugin -->
-    <script
-      src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@2.0.1/dist/chartjs-plugin-zoom.min.js"
-      crossorigin="anonymous"
-    ></script>
-
     <!-- Personal Script -->
     <script defer type="text/javascript">
-
       /**
-       * Who doesn't love intellisense? I'll define the JSON schema of the `duolingo-progress.json` here so you can
-       * enjoy the intellisense.
-       *
-       * @typedef Entry
-       * @type {object}
-       * @property {number} number_of_sessions - Number of sessions that are done in a single day.
-       * @property {number} session_time - Duration of session in a single day, in seconds.
-       * @property {number} streak - Current streak.
-       * @property {number} xp_today - Experience points that are gained in a single day.
-       *
-       * @typedef Data
-       * @type {Object.<string, Entry>}
+       * Data aggregation functions
        */
+      function aggregateData(data, aggregation) {
+        const dates = Object.keys(data).sort();
+        
+        if (aggregation === 'daily') {
+          return { 
+            dates, 
+            values: dates.map(date => data[date])
+          };
+        }
+        
+        const aggregated = {};
+        
+        dates.forEach(date => {
+          // Parse date from YYYY/MM/DD format
+          const [year, month, day] = date.split('/').map(Number);
+          const dateObj = new Date(year, month - 1, day); // month is 0-indexed
+          
+          let key;
+          
+          if (aggregation === 'weekly') {
+            // Get start of week (Monday)
+            const startOfWeek = new Date(dateObj);
+            const dayOfWeek = dateObj.getDay();
+            const daysToMonday = dayOfWeek === 0 ? 6 : dayOfWeek - 1; // Sunday = 0, Monday = 1
+            startOfWeek.setDate(dateObj.getDate() - daysToMonday);
+            key = `${startOfWeek.getFullYear()}/${String(startOfWeek.getMonth() + 1).padStart(2, '0')}/${String(startOfWeek.getDate()).padStart(2, '0')}`;
+          } else if (aggregation === 'monthly') {
+            // Get start of month
+            key = `${year}/${String(month).padStart(2, '0')}/01`;
+          }
+          
+          if (!aggregated[key]) {
+            aggregated[key] = {
+              number_of_sessions: 0,
+              session_time: 0,
+              streak: 0,
+              xp_today: 0,
+              count: 0
+            };
+          }
+          
+          const entry = data[date];
+          aggregated[key].number_of_sessions += entry.number_of_sessions;
+          aggregated[key].session_time += entry.session_time;
+          aggregated[key].xp_today += entry.xp_today;
+          aggregated[key].streak = Math.max(aggregated[key].streak, entry.streak);
+          aggregated[key].count += 1;
+        });
+        
+        // Calculate appropriate aggregations
+        Object.keys(aggregated).forEach(key => {
+          const entry = aggregated[key];
+          if (aggregation === 'weekly' || aggregation === 'monthly') {
+            // For XP, session time, and sessions, we want the SUM
+            // For streak, we want the MAXIMUM
+            // Keep all values as sums/maximums (don't divide by count)
+          }
+          delete entry.count;
+        });
+        
+        return {
+          dates: Object.keys(aggregated).sort(),
+          values: Object.values(aggregated)
+        };
+      }
 
       /**
        * Fetches the 'database' - a JSON file consisting of Duolingo progress.
-       *
-       * @returns {Promise<Data>} Data consisting of Duolingo information.
        */
       async function getDataFromJSON() {
         const url = `${window.location.protocol}//${window.location.hostname}:${window.location.port}`;
-        const response = await fetch(
-          `${url}/data/duolingo-progress.json`
-        );
-
+        const response = await fetch(`${url}/data/duolingo-progress.json`);
         return response.json();
       }
 
       /**
-       * Renders the experience graph.
-       *
-       * @param {Data} data - Parsed data.
+       * Calculate running average based on aggregation level and data field
        */
-      function renderExperienceGraph(data) {
-        const dates = Object.keys(data);
-        const values = Object.values(data);
-        const element = document.getElementById("experienceGraph");
-        if (!element) {
-          console.error('Experience graph element not found');
-          return null;
+      function calculateRunningAverage(values, aggregation, field = 'xp_today') {
+        const windowSize = aggregation === 'daily' ? 7 : 
+                          aggregation === 'weekly' ? 4 : 3; // monthly
+        
+        const runningAvg = [];
+        for (let i = 0; i < values.length; i++) {
+          const start = Math.max(0, i - windowSize + 1);
+          const window = values.slice(start, i + 1);
+          const avg = window.reduce((sum, v) => sum + v[field], 0) / window.length;
+          runningAvg.push(Math.round(avg * 100) / 100); // Round to 2 decimal places
         }
-
-        console.log('Creating experience graph with zoom plugin...');
-        return new Chart(element, {
-          type: "line",
-          data: {
-            labels: dates,
-            datasets: [
-              {
-                backgroundColor: "rgba(46, 204, 113, 0.5)",
-                borderColor: "rgba(46, 204, 113, 1.0)",
-                borderWidth: 2,
-                data: values.map((value) => value.xp_today),
-                fill: true,
-                label: "XP Gained",
-                pointBackgroundColor: "rgba(52, 152, 219, 1.0)",
-                pointRadius: 5,
-                pointStyle: "star",
-                tension: 0,
-              },
-            ],
-          },
-          options: {
-            maintainAspectRatio: false,
-            responsive: true,
-            plugins: {
-              annotation: {
-                annotations: {
-                  average: {
-                    type: "line",
-                    borderColor: "rgba(0, 0, 0, 1)",
-                    borderDash: [6, 6],
-                    borderDashOffset: 0,
-                    borderWidth: 2,
-                    label: {
-                      display: true,
-                      content: `Average: ${(
-                        values.reduce(
-                          (previous, current) => previous + current.xp_today,
-                          0
-                        ) / values.length
-                      ).toFixed(2)} XP`,
-                      position: "center",
-                    },
-                    scaleID: "y",
-                    value:
-                      values.reduce(
-                        (previous, current) => previous + current.xp_today,
-                        0
-                      ) / values.length,
-                  },
-                  lower: {
-                    type: "line",
-                    borderColor: "rgba(232, 67, 147, 1.0)",
-                    borderRadius: 10,
-                    borderWidth: 2,
-                    label: {
-                      backgroundColor: "rgba(232, 67, 147, 1.0)",
-                      display: true,
-                      content: `Min: ${Math.min(
-                        ...values.map((value) => value.xp_today)
-                      )} XP`,
-                      position: "start",
-                    },
-                    scaleID: "y",
-                    value: Math.min(...values.map((value) => value.xp_today)),
-                  },
-                  upper: {
-                    type: "line",
-                    borderColor: "rgba(253, 121, 168, 1.0)",
-                    borderRadius: 10,
-                    borderWidth: 2,
-                    label: {
-                      backgroundColor: "rgba(232, 67, 147, 1.0)",
-                      display: true,
-                      content: `Max: ${Math.max(
-                        ...values.map((value) => value.xp_today)
-                      )} XP`,
-                      position: "start",
-                    },
-                    scaleID: "y",
-                    value: Math.max(...values.map((value) => value.xp_today)),
-                  },
-                },
-              },
-              title: {
-                display: true,
-                text: "Experience Points (XP) Graph",
-              },
-              tooltip: {
-                intersect: false,
-              },
-              subtitle: {
-                display: true,
-                text: "Daily generation of XPs compared with your daily goal. Use mouse wheel to zoom, drag to pan, double-click to reset.",
-              },
-              zoom: {
-                zoom: {
-                  wheel: {
-                    enabled: true,
-                  },
-                  pinch: {
-                    enabled: true,
-                  },
-                  mode: 'x',
-                },
-                pan: {
-                  enabled: true,
-                  mode: 'x',
-                },
-                limits: {
-                  x: {min: 'original', max: 'original', minRange: 0}
-                }
-              },
-              interaction: {
-                intersect: false,
-                mode: 'index'
-              },
-              onHover: (event, activeElements) => {
-                event.native.target.style.cursor = activeElements.length > 0 ? 'pointer' : 'default';
-              },
-            },
-          },
-        });
+        return runningAvg;
       }
 
       /**
-       * Renders the time graph.
-       *
-       * @param {Data[]} data - Parsed data.
+       * Renders the experience graph with Plotly
        */
-      function renderTimeGraph(data) {
-        const dates = Object.keys(data);
-        const values = Object.values(data);
-        const element = document.getElementById("timeGraph");
-        if (!element) return null;
-
-        // Some calculations are hard to read if it's inlined, so I decided to write
-        // them here, these variables are used when we want to make a line/average
-        // label.
-        const totalMinutes = (
-          values.reduce(
-            (previous, current) => previous + current.session_time / 60, // In minutes.
-            0
-          ) / values.length
-        ).toFixed(2);
-        const totalHours = Math.floor(totalMinutes / 60).toFixed(2);
-
-        return new Chart(element, {
-          type: "line",
-          data: {
-            labels: dates,
-            datasets: [
-              {
-                backgroundColor: "rgb(255, 248, 10, 0.5)",
-                borderColor: "rgb(254, 177, 57, 1.0)",
-                borderWidth: 2,
-                data: values.map(
-                  (value) => (value.session_time / 60).toFixed(2) // This is in minutes for easier calculation.
-                ),
-                fill: true,
-                label: "Session Time (Minutes)",
-                pointBackgroundColor: "rgb(41, 52, 98, 1.0)",
-                pointRadius: 5,
-                pointStyle: "circle",
-                tension: 0,
-              },
-            ],
-          },
-          options: {
-            maintainAspectRatio: false,
-            responsive: true,
-            plugins: {
-              annotation: {
-                annotations: {
-                  average: {
-                    type: "line",
-                    borderColor: "rgba(0, 0, 0, 1)",
-                    borderDash: [6, 6],
-                    borderDashOffset: 0,
-                    borderWidth: 2,
-                    label: {
-                      display: true,
-                      content: `Average: ${totalHours} hour(s) ${totalMinutes} minute(s)`,
-                      position: "center",
-                    },
-                    scaleID: "y",
-                    value: (
-                      values.reduce(
-                        (previous, current) =>
-                          previous + current.session_time / 60, // This is in minutes for easier line calculation.
-                        0
-                      ) / values.length
-                    ).toFixed(2),
-                  },
-                },
-              },
-              title: {
-                display: true,
-                text: "Time Graph",
-              },
-              tooltip: {
-                intersect: false,
-                callbacks: {
-                  // Display a useful, human-friendly format in 'Hours/Minutes'.
-                  afterLabel: function (context) {
-                    const parsedHour =
-                      Number.parseInt(context.formattedValue, 10) / 60;
-                    const shownHours = Math.floor(parsedHour);
-                    const shownMinutes = Math.round(
-                      (parsedHour - shownHours) * 60
-                    );
-
-                    return `Session Time (Hours/Minutes): ${shownHours} hour(s) ${shownMinutes} minute(s)`;
-                  },
-                },
-              },
-              subtitle: {
-                display: true,
-                text: "Showcases your daily time spent (in minutes) in Duolingo. Use mouse wheel to zoom, drag to pan, double-click to reset.",
-              },
-              zoom: {
-                zoom: {
-                  wheel: {
-                    enabled: true,
-                  },
-                  pinch: {
-                    enabled: true,
-                  },
-                  mode: 'x',
-                },
-                pan: {
-                  enabled: true,
-                  mode: 'x',
-                },
-                limits: {
-                  x: {min: 'original', max: 'original', minRange: 0}
-                }
-              },
-              interaction: {
-                intersect: false,
-                mode: 'index'
-              },
-              onHover: (event, activeElements) => {
-                event.native.target.style.cursor = activeElements.length > 0 ? 'pointer' : 'default';
-              },
-            },
-          },
+      function renderExperienceGraph(data, aggregation = 'daily') {
+        const { dates, values } = aggregateData(data, aggregation);
+        
+        // Convert dates from YYYY/MM/DD to YYYY-MM-DD for Plotly
+        const plotlyDates = dates.map(date => date.replace(/\//g, '-'));
+        
+        // Calculate running average
+        const runningAvg = calculateRunningAverage(values, aggregation);
+        
+        // Find maximum value and its index
+        const xpValues = values.map(v => v.xp_today);
+        const maxXp = Math.max(...xpValues);
+        const maxIndex = xpValues.indexOf(maxXp);
+        
+        console.log('Experience Graph Data:', {
+          aggregation,
+          dateCount: dates.length,
+          firstDate: dates[0],
+          lastDate: dates[dates.length - 1],
+          firstPlotlyDate: plotlyDates[0],
+          sampleValues: values.slice(0, 3),
+          maxXp,
+          maxDate: plotlyDates[maxIndex]
         });
+        
+        const traces = [
+          {
+            x: plotlyDates,
+            y: runningAvg,
+            type: 'scatter',
+            mode: 'lines',
+            name: `Running Average (${aggregation === 'daily' ? '7-day' : aggregation === 'weekly' ? '4-week' : '3-month'})`,
+            line: {
+              color: 'rgb(255, 99, 132)',
+              width: 2,
+              dash: 'dash'
+            }
+          },
+          {
+            x: plotlyDates,
+            y: xpValues,
+            type: 'scatter',
+            mode: 'lines+markers',
+            name: 'XP Gained',
+            line: {
+              color: 'rgb(46, 204, 113)',
+              width: 3
+            },
+            marker: {
+              color: 'rgb(52, 152, 219)',
+              size: 6,
+              symbol: 'star'
+            },
+            fill: 'tonexty',
+            fillcolor: 'rgba(46, 204, 113, 0.3)'
+          }
+        ];
+
+        const layout = {
+          title: {
+            text: `Experience Points (XP) - ${aggregation.charAt(0).toUpperCase() + aggregation.slice(1)} ${aggregation === 'daily' ? 'View' : 'Total'}`,
+            font: { size: 18 }
+          },
+          xaxis: {
+            title: 'Date',
+            type: 'date'
+          },
+          yaxis: {
+            title: 'XP Gained'
+          },
+          hovermode: 'x unified',
+          showlegend: true,
+          legend: {
+            orientation: 'h',
+            x: 0.5,
+            xanchor: 'center',
+            y: 1.02,
+            yanchor: 'bottom'
+          },
+          plot_bgcolor: 'rgba(0,0,0,0)',
+          paper_bgcolor: 'rgba(0,0,0,0)',
+          annotations: [
+            {
+              x: plotlyDates[maxIndex],
+              y: maxXp,
+              text: `Max: ${maxXp} XP`,
+              showarrow: true,
+              arrowhead: 2,
+              arrowsize: 1,
+              arrowwidth: 2,
+              arrowcolor: 'rgb(255, 0, 0)',
+              ax: 20,
+              ay: -30,
+              bgcolor: 'rgba(255, 255, 255, 0.8)',
+              bordercolor: 'rgb(255, 0, 0)',
+              borderwidth: 1,
+              font: {
+                color: 'rgb(0, 0, 0)',
+                size: 12
+              }
+            }
+          ]
+        };
+
+        const config = {
+          displayModeBar: true,
+          modeBarButtonsToRemove: ['pan2d', 'lasso2d'],
+          displaylogo: false
+        };
+
+        Plotly.newPlot('experienceGraph', traces, layout, config);
       }
 
       /**
-       * Renders the sessions graph.
-       *
-       * @param {Data[]} data - Parsed data.
+       * Renders the time graph with Plotly
        */
-      function renderSessionsGraph(data) {
-        const dates = Object.keys(data);
-        const values = Object.values(data);
-        const element = document.getElementById("sessionsGraph");
-        if (!element) return null;
-
-        return new Chart(element, {
-          type: "line",
-          data: {
-            labels: dates,
-            datasets: [
-              {
-                backgroundColor: "rgb(125, 157, 156, 0.5)",
-                borderColor: "rgb(239, 91, 12, 1.0)",
-                borderWidth: 2,
-                data: values.map((value) => value.number_of_sessions),
-                fill: true,
-                label: "Number of Sessions",
-                pointBackgroundColor: "rgb(242, 223, 58, 1.0)",
-                pointRadius: 5,
-                pointStyle: "circle",
-                tension: 0,
-              },
-            ],
+      function renderTimeGraph(data, aggregation = 'daily') {
+        const { dates, values } = aggregateData(data, aggregation);
+        
+        // Convert dates from YYYY/MM/DD to YYYY-MM-DD for Plotly
+        const plotlyDates = dates.map(date => date.replace(/\//g, '-'));
+        
+        // Determine unit and conversion factor based on aggregation
+        let unit, conversionFactor, yAxisTitle, maxLabel;
+        if (aggregation === 'daily') {
+          unit = 'minutes';
+          conversionFactor = 1/60; // Convert seconds to minutes
+          yAxisTitle = 'Minutes';
+          maxLabel = 'min';
+        } else {
+          unit = 'hours';
+          conversionFactor = 1/(60*60); // Convert seconds to hours
+          yAxisTitle = 'Hours';
+          maxLabel = 'hrs';
+        }
+        
+        // Convert session time to appropriate unit and calculate running average
+        const timeValues = values.map(v => Math.round(v.session_time * conversionFactor * 100) / 100);
+        const runningAvg = calculateRunningAverage(values, aggregation, 'session_time').map(v => Math.round(v * conversionFactor * 100) / 100);
+        
+        // Find maximum value and its index
+        const maxTime = Math.max(...timeValues);
+        const maxIndex = timeValues.indexOf(maxTime);
+        
+        const traces = [
+          {
+            x: plotlyDates,
+            y: runningAvg,
+            type: 'scatter',
+            mode: 'lines',
+            name: `Running Average (${aggregation === 'daily' ? '7-day' : aggregation === 'weekly' ? '4-week' : '3-month'})`,
+            line: {
+              color: 'rgb(255, 99, 132)',
+              width: 2,
+              dash: 'dash'
+            }
           },
-          options: {
-            maintainAspectRatio: false,
-            responsive: true,
-            plugins: {
-              annotation: {
-                annotations: {
-                  average: {
-                    type: "line",
-                    borderColor: "rgba(0, 0, 0, 1)",
-                    borderDash: [6, 6],
-                    borderDashOffset: 0,
-                    borderWidth: 2,
-                    label: {
-                      display: true,
-                      content: `Average: ${(
-                        values.reduce(
-                          (previous, current) =>
-                            previous + current.number_of_sessions,
-                          0
-                        ) / values.length
-                      ).toFixed(2)} session(s)`,
-                      position: "center",
-                    },
-                    scaleID: "y",
-                    value:
-                      values.reduce(
-                        (previous, current) =>
-                          previous + current.number_of_sessions,
-                        0
-                      ) / values.length,
-                  },
-                },
-              },
-              title: {
-                display: true,
-                text: "Sessions Graph",
-              },
-              tooltip: {
-                intersect: false,
-              },
-              subtitle: {
-                display: true,
-                text: "Showcases your number of daily sessions taken in Duolingo. Use mouse wheel to zoom, drag to pan, double-click to reset.",
-              },
-              zoom: {
-                zoom: {
-                  wheel: {
-                    enabled: true,
-                  },
-                  pinch: {
-                    enabled: true,
-                  },
-                  mode: 'x',
-                },
-                pan: {
-                  enabled: true,
-                  mode: 'x',
-                },
-                limits: {
-                  x: {min: 'original', max: 'original', minRange: 0}
-                }
-              },
-              interaction: {
-                intersect: false,
-                mode: 'index'
-              },
-              onHover: (event, activeElements) => {
-                event.native.target.style.cursor = activeElements.length > 0 ? 'pointer' : 'default';
-              },
+          {
+            x: plotlyDates,
+            y: timeValues,
+            type: 'scatter',
+            mode: 'lines+markers',
+            name: `Session Time (${unit.charAt(0).toUpperCase() + unit.slice(1)})`,
+            line: {
+              color: 'rgb(254, 177, 57)',
+              width: 3
             },
+            marker: {
+              color: 'rgb(41, 52, 98)',
+              size: 6
+            },
+            fill: 'tonexty',
+            fillcolor: 'rgba(255, 248, 10, 0.3)'
+          }
+        ];
+
+        const layout = {
+          title: {
+            text: `Time Spent - ${aggregation.charAt(0).toUpperCase() + aggregation.slice(1)} ${aggregation === 'daily' ? 'View' : 'Total'}`,
+            font: { size: 18 }
           },
-        });
+          xaxis: {
+            title: 'Date',
+            type: 'date'
+          },
+          yaxis: {
+            title: yAxisTitle
+          },
+          hovermode: 'x unified',
+          showlegend: true,
+          legend: {
+            orientation: 'h',
+            x: 0.5,
+            xanchor: 'center',
+            y: 1.02,
+            yanchor: 'bottom'
+          },
+          plot_bgcolor: 'rgba(0,0,0,0)',
+          paper_bgcolor: 'rgba(0,0,0,0)',
+          annotations: [
+            {
+              x: plotlyDates[maxIndex],
+              y: maxTime,
+              text: `Max: ${maxTime} ${maxLabel}`,
+              showarrow: true,
+              arrowhead: 2,
+              arrowsize: 1,
+              arrowwidth: 2,
+              arrowcolor: 'rgb(255, 0, 0)',
+              ax: 20,
+              ay: -30,
+              bgcolor: 'rgba(255, 255, 255, 0.8)',
+              bordercolor: 'rgb(255, 0, 0)',
+              borderwidth: 1,
+              font: {
+                color: 'rgb(0, 0, 0)',
+                size: 12
+              }
+            }
+          ]
+        };
+
+        const config = {
+          displayModeBar: true,
+          modeBarButtonsToRemove: ['pan2d', 'lasso2d'],
+          displaylogo: false
+        };
+
+        Plotly.newPlot('timeGraph', traces, layout, config);
       }
 
       /**
-       * Renders the streak graph.
-       *
-       * @param {Data[]} data - Parsed data.
+       * Renders the sessions graph with Plotly
        */
-      function renderStreakGraph(data) {
-        const dates = Object.keys(data);
-        const values = Object.values(data);
-        const element = document.getElementById("streakGraph");
-        if (!element) return null;
-
-        return new Chart(element, {
-          type: "line",
-          data: {
-            labels: dates,
-            datasets: [
-              {
-                backgroundColor: "rgb(0, 215, 255, 0.5)",
-                borderColor: "rgb(0, 150, 255, 1.0)",
-                borderWidth: 2,
-                data: values.map((value) => value.streak),
-                fill: true,
-                label: "Number of Streak",
-                pointBackgroundColor: "rgb(88, 0, 255, 1.0)",
-                pointRadius: 5,
-                pointStyle: "rectRot",
-                tension: 0,
-              },
-            ],
+      function renderSessionsGraph(data, aggregation = 'daily') {
+        const { dates, values } = aggregateData(data, aggregation);
+        
+        // Convert dates from YYYY/MM/DD to YYYY-MM-DD for Plotly
+        const plotlyDates = dates.map(date => date.replace(/\//g, '-'));
+        
+        // Calculate running average
+        const sessionValues = values.map(v => v.number_of_sessions);
+        const runningAvg = calculateRunningAverage(values, aggregation, 'number_of_sessions');
+        
+        // Find maximum value and its index
+        const maxSessions = Math.max(...sessionValues);
+        const maxIndex = sessionValues.indexOf(maxSessions);
+        
+        const traces = [
+          {
+            x: plotlyDates,
+            y: runningAvg,
+            type: 'scatter',
+            mode: 'lines',
+            name: `Running Average (${aggregation === 'daily' ? '7-day' : aggregation === 'weekly' ? '4-week' : '3-month'})`,
+            line: {
+              color: 'rgb(255, 99, 132)',
+              width: 2,
+              dash: 'dash'
+            }
           },
-          options: {
-            maintainAspectRatio: false,
-            responsive: true,
-            plugins: {
-              title: {
-                display: true,
-                text: "Streak Graph",
-              },
-              tooltip: {
-                intersect: false,
-              },
-              subtitle: {
-                display: true,
-                text: "Showcases your streak information per day. Use mouse wheel to zoom, drag to pan, double-click to reset.",
-              },
-              zoom: {
-                zoom: {
-                  wheel: {
-                    enabled: true,
-                  },
-                  pinch: {
-                    enabled: true,
-                  },
-                  mode: 'x',
-                },
-                pan: {
-                  enabled: true,
-                  mode: 'x',
-                },
-                limits: {
-                  x: {min: 'original', max: 'original', minRange: 0}
-                }
-              },
-              interaction: {
-                intersect: false,
-                mode: 'index'
-              },
-              onHover: (event, activeElements) => {
-                event.native.target.style.cursor = activeElements.length > 0 ? 'pointer' : 'default';
-              },
+          {
+            x: plotlyDates,
+            y: sessionValues,
+            type: 'scatter',
+            mode: 'lines+markers',
+            name: 'Number of Sessions',
+            line: {
+              color: 'rgb(239, 91, 12)',
+              width: 3
             },
+            marker: {
+              color: 'rgb(242, 223, 58)',
+              size: 6
+            },
+            fill: 'tonexty',
+            fillcolor: 'rgba(125, 157, 156, 0.3)'
+          }
+        ];
+
+        const layout = {
+          title: {
+            text: `Sessions - ${aggregation.charAt(0).toUpperCase() + aggregation.slice(1)} ${aggregation === 'daily' ? 'View' : 'Total'}`,
+            font: { size: 18 }
           },
-        });
+          xaxis: {
+            title: 'Date',
+            type: 'date'
+          },
+          yaxis: {
+            title: 'Number of Sessions'
+          },
+          hovermode: 'x unified',
+          showlegend: true,
+          legend: {
+            orientation: 'h',
+            x: 0.5,
+            xanchor: 'center',
+            y: 1.02,
+            yanchor: 'bottom'
+          },
+          plot_bgcolor: 'rgba(0,0,0,0)',
+          paper_bgcolor: 'rgba(0,0,0,0)',
+          annotations: [
+            {
+              x: plotlyDates[maxIndex],
+              y: maxSessions,
+              text: `Max: ${maxSessions} sessions`,
+              showarrow: true,
+              arrowhead: 2,
+              arrowsize: 1,
+              arrowwidth: 2,
+              arrowcolor: 'rgb(255, 0, 0)',
+              ax: 20,
+              ay: -30,
+              bgcolor: 'rgba(255, 255, 255, 0.8)',
+              bordercolor: 'rgb(255, 0, 0)',
+              borderwidth: 1,
+              font: {
+                color: 'rgb(0, 0, 0)',
+                size: 12
+              }
+            }
+          ]
+        };
+
+        const config = {
+          displayModeBar: true,
+          modeBarButtonsToRemove: ['pan2d', 'lasso2d'],
+          displaylogo: false
+        };
+
+        Plotly.newPlot('sessionsGraph', traces, layout, config);
       }
 
       /**
-       * Renders a personalized username at the header. This is intentional to give a sense
-       * of ownership.
+       * Renders the streak graph with Plotly
        */
-      function renderHeader() {
-        const element = document.getElementById("header-username");
-        if (!element) return;
+      function renderStreakGraph(data, aggregation = 'daily') {
+        const { dates, values } = aggregateData(data, aggregation);
+        
+        // Convert dates from YYYY/MM/DD to YYYY-MM-DD for Plotly
+        const plotlyDates = dates.map(date => date.replace(/\//g, '-'));
+        
+        const trace = {
+          x: plotlyDates,
+          y: values.map(v => v.streak),
+          type: 'scatter',
+          mode: 'lines+markers',
+          name: 'Streak',
+          line: {
+            color: 'rgb(0, 150, 255)',
+            width: 3
+          },
+          marker: {
+            color: 'rgb(88, 0, 255)',
+            size: 6,
+            symbol: 'diamond'
+          },
+          fill: 'tonexty',
+          fillcolor: 'rgba(0, 215, 255, 0.3)'
+        };
 
-        const username = window.location.host.split(".")[0];
-        element.textContent = `User: @${username}`;
+        const layout = {
+          title: {
+            text: `Streak - ${aggregation.charAt(0).toUpperCase() + aggregation.slice(1)} ${aggregation === 'daily' ? 'View' : 'Maximum'}`,
+            font: { size: 18 }
+          },
+          xaxis: {
+            title: 'Date',
+            type: 'date'
+          },
+          yaxis: {
+            title: 'Streak Days'
+          },
+          hovermode: 'x unified',
+          showlegend: true,
+          legend: {
+            orientation: 'h',
+            x: 0.5,
+            xanchor: 'center',
+            y: 1.02,
+            yanchor: 'bottom'
+          },
+          plot_bgcolor: 'rgba(0,0,0,0)',
+          paper_bgcolor: 'rgba(0,0,0,0)'
+        };
 
-        return null;
+        const config = {
+          displayModeBar: true,
+          modeBarButtonsToRemove: ['pan2d', 'lasso2d'],
+          displaylogo: false
+        };
+
+        Plotly.newPlot('streakGraph', [trace], layout, config);
+      }
+
+      /**
+       * Updates all charts with new aggregation
+       */
+      function updateCharts(aggregation) {
+        console.log('Updating charts with aggregation:', aggregation);
+        
+        // Debug: Show data structure
+        const { dates, values } = aggregateData(window.duolingoData, aggregation);
+        console.log(`Aggregated data for ${aggregation}:`, {
+          dateCount: dates.length,
+          firstDate: dates[0],
+          lastDate: dates[dates.length - 1],
+          sampleValues: values.slice(0, 3)
+        });
+        
+        renderExperienceGraph(window.duolingoData, aggregation);
+        renderTimeGraph(window.duolingoData, aggregation);
+        renderSessionsGraph(window.duolingoData, aggregation);
+        renderStreakGraph(window.duolingoData, aggregation);
+        renderSummaryStatistics();
       }
 
       /**
@@ -849,68 +830,50 @@
       }
 
       /**
-       * Bootstraps the whole DOM and renders the graphs for you. These functions are
-       * not pure and side effects are to be expected: network JSON request and several DOM rendering
-       * processes. We make sure that `data` exists to prevent unwanted errors.
+       * Bootstraps the application
        */
       async function bootstrap() {
-        console.log('Starting bootstrap...');
-        
-        // Register Chart.js plugins
         try {
-          if (typeof ChartAnnotation !== 'undefined') {
-            Chart.register(ChartAnnotation);
-            console.log('Annotation plugin registered');
-          } else {
-            console.warn('ChartAnnotation not available');
-          }
-          
-          if (typeof ChartZoom !== 'undefined') {
-            Chart.register(ChartZoom);
-            console.log('Zoom plugin registered');
-          } else {
-            console.warn('ChartZoom not available');
-          }
-        } catch (error) {
-          console.error('Error registering plugins:', error);
-        }
-        
-        try {
+          console.log('Loading data...');
           const data = await getDataFromJSON();
           if (!data) {
             console.error('No data received');
-            return null;
+            return;
           }
 
+          window.duolingoData = data;
           console.log('Data loaded successfully:', Object.keys(data).length, 'entries');
+          console.log('Sample data:', {
+            firstDate: Object.keys(data)[0],
+            lastDate: Object.keys(data)[Object.keys(data).length - 1],
+            sampleEntry: data[Object.keys(data)[0]]
+          });
 
-          // Delegate to other functions after we are sure that `data` variable exists properly and would not
-          // throw any obscure errors.
-          renderExperienceGraph(data);
-          renderTimeGraph(data);
-          renderSessionsGraph(data);
-          renderStreakGraph(data);
-          renderHeader();
-          renderSummaryStatistics();
+          // Render initial charts
+          updateCharts('daily');
 
-          console.log('All charts rendered successfully');
-          return null;
+          // Add event listeners for aggregation controls
+          document.querySelectorAll('input[name="aggregation"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+              if (this.checked) {
+                updateCharts(this.value);
+              }
+            });
+          });
+
+          console.log('Application initialized successfully');
         } catch (error) {
           console.error('Error in bootstrap:', error);
-          return null;
         }
       }
 
-      /**
-       * Runner.
-       */
+      // Start the application
       bootstrap()
         .then(() => {
-          console.log("Website has finished rendering your Duolingo data.");
+          console.log('Plotly.js visualization loaded successfully');
         })
         .catch((err) => {
-          console.error("An error ocurred. Please refresh the page!");
-          console.error(err);
+          console.error('An error occurred:', err);
         });
     </script>
   </body>
