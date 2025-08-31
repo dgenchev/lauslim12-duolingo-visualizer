@@ -62,6 +62,7 @@ jobs:
           cp web/* build
           mkdir -p build/data
           cp data/duolingo-progress.json build/data/
+          cp data/duojson-profile.json build/data/ 2>/dev/null || echo "DuoJSON data not available"
           # Inject username into HTML files
           sed -i "s/DUOLINGO_USERNAME_PLACEHOLDER/${{ secrets.DUOLINGO_USERNAME }}/g" build/*.html
 

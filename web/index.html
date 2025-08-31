@@ -727,95 +727,93 @@
        */
       async function renderSummaryStatistics() {
         try {
-          // Get username from GitHub Actions (injected during build) or local environment
-          const username = "DUOLINGO_USERNAME_PLACEHOLDER";
-          
-          // Fetch summary statistics from DuoJSON API (using CORS proxy)
-          const response = await fetch(`https://api.allorigins.win/raw?url=${encodeURIComponent(`https://duojson.com/${username}/profile.json`)}`);
-          if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+          // Try to load DuoJSON data from local file first
+          try {
+            const response = await fetch('./data/duojson-profile.json');
+            if (response.ok) {
+              const profileData = await response.json();
+              console.log('DuoJSON profile data loaded:', profileData);
+              
+              // Extract and display summary statistics
+              document.getElementById('totalXp').textContent = (profileData.totalXp || 0).toLocaleString();
+              document.getElementById('totalCrowns').textContent = (profileData.totalCrowns || 0).toLocaleString();
+              document.getElementById('currentStreak').textContent = `${profileData.currentStreak || 0} days`;
+              
+              // Display language progress (sorted by XP descending)
+              const languageCards = document.getElementById('languageCards');
+              languageCards.innerHTML = '';
+              
+              if (profileData.languages && profileData.languages.length > 0) {
+                // Sort languages by XP (descending)
+                const sortedLanguages = profileData.languages.sort((a, b) => b.xp - a.xp);
+                
+                // Language to flag mapping
+                const languageFlags = {
+                  'Dutch': '🇳🇱', 'Japanese': '🇯🇵', 'German': '🇩🇪', 'Russian': '🇷🇺',
+                  'Spanish': '🇪🇸', 'French': '🇫🇷', 'Italian': '🇮🇹', 'Portuguese': '🇵🇹',
+                  'Chinese': '🇨🇳', 'Korean': '🇰🇷', 'Arabic': '🇸🇦', 'Hindi': '🇮🇳',
+                  'Turkish': '🇹🇷', 'Polish': '🇵🇱', 'Swedish': '🇸🇪', 'Norwegian': '🇳🇴',
+                  'Danish': '🇩🇰', 'Finnish': '🇫🇮', 'Greek': '🇬🇷', 'Hebrew': '🇮🇱',
+                  'Vietnamese': '🇻🇳', 'Indonesian': '🇮🇩', 'Ukrainian': '🇺🇦', 'Czech': '🇨🇿',
+                  'Romanian': '🇷🇴', 'Hungarian': '🇭🇺', 'Bulgarian': '🇧🇬', 'Croatian': '🇭🇷',
+                  'Slovak': '🇸🇰', 'Lithuanian': '🇱🇹', 'Latvian': '🇱🇻', 'Estonian': '🇪🇪',
+                  'Irish': '🇮🇪', 'Welsh': '🏴󠁧󠁢󠁷󠁬󠁳󠁿', 'Swahili': '🇰🇪', 'Hawaiian': '🇺🇸',
+                  'Navajo': '🇺🇸', 'Yiddish': '🇮🇱', 'Esperanto': '🌍', 'Klingon': '🖖',
+                  'High Valyrian': '🐉', 'Latin': '🏛️'
+                };
+                
+                sortedLanguages.forEach((lang, index) => {
+                  const flag = languageFlags[lang.course] || '🌍';
+                  const card = document.createElement('div');
+                  card.className = 'col-3';
+                  card.innerHTML = `
+                    <div class="card border-info">
+                      <div class="card-body text-center p-1">
+                        <div class="mb-1" style="font-size: 1rem;">${flag}</div>
+                        <h6 class="card-title text-info mb-0" style="font-size: 0.7rem;">${lang.xp.toLocaleString()}</h6>
+                      </div>
+                    </div>
+                  `;
+                  languageCards.appendChild(card);
+                });
+              }
+              
+              console.log('Summary statistics loaded successfully from DuoJSON');
+              return null;
+            }
+          } catch (duojsonError) {
+            console.warn('DuoJSON data not available, falling back to local calculation:', duojsonError);
           }
           
-          const profileData = await response.json();
-          console.log('DuoJSON profile data:', profileData);
-          
-          // Extract and display summary statistics
-          document.getElementById('totalXp').textContent = (profileData.totalXp || 0).toLocaleString();
-          document.getElementById('totalCrowns').textContent = (profileData.totalCrowns || 0).toLocaleString();
-          document.getElementById('currentStreak').textContent = `${profileData.currentStreak || 0} days`;
-          
-          // Display language progress (sorted by XP descending)
-          const languageCards = document.getElementById('languageCards');
-          languageCards.innerHTML = '';
-          
-          if (profileData.languages && profileData.languages.length > 0) {
-            // Sort languages by XP (descending)
-            const sortedLanguages = profileData.languages.sort((a, b) => b.xp - a.xp);
+          // Fallback: Calculate statistics from local data
+          if (window.duolingoData && Object.keys(window.duolingoData).length > 0) {
+            console.log('Calculating statistics from local data...');
             
-            // Language to flag mapping
-            const languageFlags = {
-              'Dutch': '🇳🇱',
-              'Japanese': '🇯🇵',
-              'German': '🇩🇪',
-              'Russian': '🇷🇺',
-              'Spanish': '🇪🇸',
-              'French': '🇫🇷',
-              'Italian': '🇮🇹',
-              'Portuguese': '🇵🇹',
-              'Chinese': '🇨🇳',
-              'Korean': '🇰🇷',
-              'Arabic': '🇸🇦',
-              'Hindi': '🇮🇳',
-              'Turkish': '🇹🇷',
-              'Polish': '🇵🇱',
-              'Swedish': '🇸🇪',
-              'Norwegian': '🇳🇴',
-              'Danish': '🇩🇰',
-              'Finnish': '🇫🇮',
-              'Greek': '🇬🇷',
-              'Hebrew': '🇮🇱',
-              'Vietnamese': '🇻🇳',
-              'Indonesian': '🇮🇩',
-              'Ukrainian': '🇺🇦',
-              'Czech': '🇨🇿',
-              'Romanian': '🇷🇴',
-              'Hungarian': '🇭🇺',
-              'Bulgarian': '🇧🇬',
-              'Croatian': '🇭🇷',
-              'Slovak': '🇸🇰',
-              'Lithuanian': '🇱🇹',
-              'Latvian': '🇱🇻',
-              'Estonian': '🇪🇪',
-              'Irish': '🇮🇪',
-              'Welsh': '🏴󠁧󠁢󠁷󠁬󠁳󠁿',
-              'Swahili': '🇰🇪',
-              'Hawaiian': '🇺🇸',
-              'Navajo': '🇺🇸',
-              'Yiddish': '🇮🇱',
-              'Esperanto': '🌍',
-              'Klingon': '🖖',
-              'High Valyrian': '🐉',
-              'Latin': '🏛️'
-            };
+            const data = window.duolingoData;
+            const values = Object.values(data);
             
-            sortedLanguages.forEach((lang, index) => {
-              const flag = languageFlags[lang.course] || '🌍';
-              const card = document.createElement('div');
-              card.className = 'col-3';
-              card.innerHTML = `
-                <div class="card border-info">
-                  <div class="card-body text-center p-1">
-                    <div class="mb-1" style="font-size: 1rem;">${flag}</div>
-                    <h6 class="card-title text-info mb-0" style="font-size: 0.7rem;">${lang.xp.toLocaleString()}</h6>
-                  </div>
-                </div>
-              `;
-              languageCards.appendChild(card);
-            });
+            // Calculate total XP
+            const totalXp = values.reduce((sum, entry) => sum + (entry.xp_today || 0), 0);
+            
+            // Get current streak (from the most recent entry)
+            const currentStreak = values[values.length - 1]?.streak || 0;
+            
+            // Calculate total crowns (estimate based on XP - rough approximation)
+            const totalCrowns = Math.floor(totalXp / 10); // Rough estimate: 10 XP per crown
+            
+            // Display calculated statistics
+            document.getElementById('totalXp').textContent = totalXp.toLocaleString();
+            document.getElementById('totalCrowns').textContent = totalCrowns.toLocaleString();
+            document.getElementById('currentStreak').textContent = `${currentStreak} days`;
+            
+            // Show a note that this is calculated from local data
+            document.getElementById('languageCards').innerHTML = '<div class="col-12"><p class="text-muted small">Statistics calculated from local data</p></div>';
+            
+            console.log('Summary statistics calculated successfully from local data');
+            return null;
+          } else {
+            throw new Error('No data available for calculation');
           }
-          
-          console.log('Summary statistics loaded successfully');
-          return null;
         } catch (error) {
           console.error('Error loading summary statistics:', error);
           
@@ -823,7 +821,7 @@
           document.getElementById('totalXp').textContent = 'Error';
           document.getElementById('totalCrowns').textContent = 'Error';
           document.getElementById('currentStreak').textContent = 'Error';
-          document.getElementById('languageCards').innerHTML = '<div class="col-12"><p class="text-muted">Error loading language data</p></div>';
+          document.getElementById('languageCards').innerHTML = '<div class="col-12"><p class="text-muted">Error loading data</p></div>';
           
           return null;
         }

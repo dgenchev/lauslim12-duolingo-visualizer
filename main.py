@@ -1,6 +1,8 @@
 from datetime import datetime
 from os import environ, path
 from traceback import format_exc
+import requests
+import json
 
 from pydantic import ValidationError
 
@@ -20,6 +22,22 @@ def log(message: str) -> None:
     print(f"[JDV] {message}")
 
 
+def fetch_duojson_data(username: str) -> dict:
+    """Fetch summary statistics from DuoJSON API."""
+    try:
+        log(f"Fetching DuoJSON data for user: {username}")
+        url = f"https://duojson.com/{username}/profile.json"
+        response = requests.get(url, timeout=10)
+        response.raise_for_status()
+        
+        data = response.json()
+        log(f"Successfully fetched DuoJSON data: {len(data.get('languages', []))} languages")
+        return data
+    except Exception as e:
+        log(f"Error fetching DuoJSON data: {e}")
+        return {}
+
+
 def run() -> tuple[bool, bool]:
     # Initialize environment.
     base_api_url = "https://www.duolingo.com"
@@ -33,6 +51,7 @@ def run() -> tuple[bool, bool]:
     # Declare paths.
     progression_database_path = path.join("data", "duolingo-progress.json")
     statistics_database_path = path.join("data", "statistics.json")
+    duojson_data_path = path.join("data", "duojson-profile.json")
 
     # Initialize required infrastructures.
     api = APIClient(base_url=base_api_url)
@@ -98,6 +117,13 @@ def run() -> tuple[bool, bool]:
 
     # Store the statistics in our repository.
     statistics_database.set(statistics_entries)
+
+    # Fetch and save DuoJSON data for summary statistics
+    duojson_data = fetch_duojson_data(username)
+    if duojson_data:
+        with open(duojson_data_path, 'w') as f:
+            json.dump(duojson_data, f, indent=2)
+        log("DuoJSON data saved successfully")
 
     # Return flags from the program to consolidate the print statements in the outer loop,
     # minimizing side effects.
