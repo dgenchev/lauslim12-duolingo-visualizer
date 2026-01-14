@@ -1,10 +1,17 @@
 {
   "userId": 276449117,
   "username": "DimitarGen5",
-  "currentStreak": 425,
-  "totalXp": 237803,
-  "totalCrowns": 49995,
+  "currentStreak": 426,
+  "totalXp": 238485,
+  "totalCrowns": 59994,
   "languages": [
+    {
+      "course": "Italian",
+      "learningLanguage": "it",
+      "fromLanguage": "en",
+      "xp": 682,
+      "crowns": 9999
+    },
     {
       "course": "Dutch",
       "learningLanguage": "nl-NL",
