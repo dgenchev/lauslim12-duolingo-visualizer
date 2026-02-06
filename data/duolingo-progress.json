@@ -19224,9 +19224,15 @@
     "xp_today": 412
   },
   "2026/02/05": {
-    "number_of_sessions": 1,
-    "session_time": 122,
+    "number_of_sessions": 9,
+    "session_time": 843,
     "streak": 460,
-    "xp_today": 39
+    "xp_today": 693
+  },
+  "2026/02/06": {
+    "number_of_sessions": 5,
+    "session_time": 561,
+    "streak": 461,
+    "xp_today": 114
   }
 }
