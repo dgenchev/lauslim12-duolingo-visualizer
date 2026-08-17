@@ -20380,5 +20380,17 @@
     "session_time": 399,
     "streak": 652,
     "xp_today": 208
+  },
+  "2026/08/17": {
+    "number_of_sessions": 6,
+    "session_time": 614,
+    "streak": 653,
+    "xp_today": 269
+  },
+  "2026/08/18": {
+    "number_of_sessions": 1,
+    "session_time": 130,
+    "streak": 654,
+    "xp_today": 56
   }
 }
